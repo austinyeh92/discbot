@@ -2,7 +2,7 @@ from core.classes import Cog_Extension
 import discord
 from discord.ext import commands
 
-class Main(Cog_Extension):
+class Mains(Cog_Extension):
         
     @commands.command()
     async def ping(self, ctx):
@@ -15,4 +15,4 @@ class Main(Cog_Extension):
         await ctx.send('hi')
         
 def setup(bot):
-    bot.add_cog(Main(bot))
+    bot.add_cog(Mains(bot))

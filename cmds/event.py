@@ -21,7 +21,7 @@ class Event(Cog_Extension):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
-        if msg.content == 'apple':
+        if 'apple' in msg.content.lower() and msg.author != self.bot.user:
             await msg.channel.send('Yes. Apple.')
 def setup(bot):
     bot.add_cog(Event(bot))
