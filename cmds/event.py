@@ -9,14 +9,12 @@ with open('settings.json', 'r', encoding='utf8') as jfile:
 class Event(Cog_Extension):
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        channel = self.bot.get_channel(jdata["welcome channel"])
-        await channel.send(f'{member} joined!')
+        role = discord.utils.get(member.server.roles, id="867642851943514203")
+        await self.bot.add_roles(member, role)
         print(f'{member} joined!')
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = self.bot.get_channel(jdata["those-who-hate-the-server channel"])
-        await channel.send(f'{member} left!')
         print(f'{member} left!')
 
     @commands.Cog.listener()
