@@ -8,8 +8,7 @@ with open('settings.json', 'r', encoding='utf8') as jfile:
 
 TOKEN = jdata["DISCORD_TOKEN"]
 
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=';', intents=intents)
 
