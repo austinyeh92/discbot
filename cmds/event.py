@@ -45,17 +45,8 @@ class Event(Cog_Extension):
                 await self.bot.get_channel(867995199161397289).send(f'{msg.author} knighted as Pixel Protector')
                 await msg.delete()
             elif msg.content.lower() == 'take my roles if you really have to':
-<<<<<<< HEAD
                 role = discord.utils.get(msg.author.guild.roles, name="Peasant")
                 await msg.author.roles.set([role])
-=======
-                role = discord.utils.get(msg.author.guild.roles, name="The Royal Warrior")
-                await msg.author.remove_roles(role)
-                role = discord.utils.get(msg.author.guild.roles, name="Bloody Miner")
-                await msg.author.remove_roles(role)
-                role = discord.utils.get(msg.author.guild.roles, name="Pixel Protector")
-                await msg.author.remove_roles(role)
->>>>>>> main
                 await self.bot.get_channel(867995199161397289).send(f'{msg.author}\'s all roles taken')
                 await msg.delete()
             else:
