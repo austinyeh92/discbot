@@ -54,19 +54,21 @@ class Event(Cog_Extension):
                 await msg.delete()
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
+    async def on_raw_reaction_add(self, payload):
+        user = self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
         channel = self.bot.get_channel(867429179850227753)
         msg = await channel.fetch_message(868127572616183829)
-        if reaction.message == msg and user.top_role == discord.utils.get(user.guild.roles, name="Trespasser"):
+        if payload.message_id == 868127572616183829 and user.top_role == discord.utils.get(user.guild.roles, name="Trespasser"):
             role = discord.utils.get(user.guild.roles, name="Peasant")
             await user.edit(roles=[role])
             await self.bot.get_channel(867995199161397289).send(f'{user} reacted to the rules and became a Peasant')
 
     @commands.Cog.listener()
-    async def on_reaction_remove(self, reaction, user):
+    async def on_raw_reaction_remove(self, payload):
+        user = self.bot.get_guild(payload.guild_id).get_member(payload.user_id)
         channel = self.bot.get_channel(867429179850227753)
         msg = await channel.fetch_message(868127572616183829)
-        if reaction.message == msg:
+        if payload.message_id == 868127572616183829:
             role = discord.utils.get(user.guild.roles, name="Trespasser")
             await user.edit(roles=[role])
             await self.bot.get_channel(867995199161397289).send(f'{user} decided not to accept the rules and became a Trespasser')
