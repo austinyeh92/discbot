@@ -10,9 +10,9 @@ with open('settings.json', 'r', encoding='utf8') as jfile:
 class Event(Cog_Extension):
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        role = discord.utils.get(member.guild.roles, name="Peasant")
+        role = discord.utils.get(member.guild.roles, name="Trespasser")
         await member.add_roles(role)
-        await self.bot.get_channel(867995199161397289).send(f'{member} joined and role given')
+        await self.bot.get_channel(867995199161397289).send(f'{member} joined and Trespasser given')
         print(f'{member} joined!')
 
     @commands.Cog.listener()
@@ -53,14 +53,24 @@ class Event(Cog_Extension):
                 channel = msg.channel
                 await msg.delete()
 
-    # @commands.Cog.listener()
-    # async def on_message(self, msg):
-    #     if msg.channel == self.bot.get_channel(867656256981827584):    
-    #         if msg.content.lower() == 'knight me as the royal warrior':
-    #             role = discord.utils.get(msg.author.guild.roles, name="The Royal Warrior")
-    #             await msg.author.add_roles(role)
-    #             await msg.delete()
-            
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        channel = self.bot.get_channel(867429179850227753)
+        msg = await channel.fetch_message(868127572616183829)
+        if reaction.message == msg and user.top_role == discord.utils.get(user.guild.roles, name="Trespasser"):
+            role = discord.utils.get(user.guild.roles, name="Peasant")
+            await user.edit(roles=[role])
+            await self.bot.get_channel(867995199161397289).send(f'{user} reacted to the rules and became a Peasant')
+
+    @commands.Cog.listener()
+    async def on_reaction_remove(self, reaction, user):
+        channel = self.bot.get_channel(867429179850227753)
+        msg = await channel.fetch_message(868127572616183829)
+        if reaction.message == msg:
+            role = discord.utils.get(user.guild.roles, name="Trespasser")
+            await user.edit(roles=[role])
+            await self.bot.get_channel(867995199161397289).send(f'{user} decided not to accept the rules and became a Trespasser')
+
 
 def setup(bot):
     bot.add_cog(Event(bot))
