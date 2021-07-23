@@ -28,7 +28,7 @@ class Event(Cog_Extension):
     # Listener in the knighting ceremonies channel
     @commands.Cog.listener()
     async def on_message(self, msg):
-        if msg.channel == self.bot.get_channel(867669689953681429):    
+        if msg.channel == self.bot.get_channel(867669689953681429):
             if msg.content.lower() == 'knight me as the royal warrior':
                 role = discord.utils.get(msg.author.guild.roles, name="The Royal Warrior")
                 await msg.author.add_roles(role)
@@ -46,20 +46,20 @@ class Event(Cog_Extension):
                 await msg.delete()
             elif msg.content.lower() == 'take my roles if you really have to':
                 role = discord.utils.get(msg.author.guild.roles, name="Peasant")
-                await msg.author.roles.set([role])
+                await msg.author.edit(roles=[role])
                 await self.bot.get_channel(867995199161397289).send(f'{msg.author}\'s all roles taken')
                 await msg.delete()
             else:
                 channel = msg.channel
                 await msg.delete()
 
-    @commands.Cog.listener()
-    async def on_message(self, msg):
-        if msg.channel == self.bot.get_channel(867656256981827584):    
-            if msg.content.lower() == 'knight me as the royal warrior':
-                role = discord.utils.get(msg.author.guild.roles, name="The Royal Warrior")
-                await msg.author.add_roles(role)
-                await msg.delete()
+    # @commands.Cog.listener()
+    # async def on_message(self, msg):
+    #     if msg.channel == self.bot.get_channel(867656256981827584):    
+    #         if msg.content.lower() == 'knight me as the royal warrior':
+    #             role = discord.utils.get(msg.author.guild.roles, name="The Royal Warrior")
+    #             await msg.author.add_roles(role)
+    #             await msg.delete()
             
 
 def setup(bot):
