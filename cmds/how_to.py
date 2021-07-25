@@ -16,7 +16,7 @@ class HowTo(Cog_Extension):
                 html = urllib.request.urlopen(f'https://www.youtube.com/results?search_query={text1}')
                 video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
                 await msg.channel.send(f'https://www.youtube.com/watch?v={video_ids[0]}')
-                embed=discord.Embed(title=f"Other results for how to {text}", color=0x00f900)
+                embed=discord.Embed(title=f"Other results for {text}", color=0x00f900)
                 embed.set_author(name="Remu chan", url="https://imgur.com/a/cVfP2En")
                 embed.add_field(name=req.get(f'https://noembed.com/embed?url=https://www.youtube.com/watch?v={video_ids[1]}').text.partition('\"title\":\"')[2].partition('\",\"')[0], value=f'https://www.youtube.com/watch?v={video_ids[1]}', inline=False)
                 embed.add_field(name=req.get(f'https://noembed.com/embed?url=https://www.youtube.com/watch?v={video_ids[2]}').text.partition('\"title\":\"')[2].partition('\",\"')[0], value=f'https://www.youtube.com/watch?v={video_ids[2]}', inline=False)
