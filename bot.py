@@ -19,19 +19,19 @@ async def on_ready():
 async def load(ctx, extension):
     bot.load_extension(f'cmds.{extension}')
     await ctx.send(f'{extension} succesffuly loaded.')
-    await bot.get_channel(867995199161397289).send(f'{extension} successfully loaded')
+    await bot.get_channel(jdata["remu-chan-log"]).send(f'{extension} successfully loaded')
 
 @bot.command()
 async def unload(ctx, extension):
     bot.unload_extension(f'cmds.{extension}')
     await ctx.send(f'{extension} succesffuly unloaded.')
-    await bot.get_channel(867995199161397289).send(f'{extension} successfully unloaded')
+    await bot.get_channel(jdata["remu-chan-log"]).send(f'{extension} successfully unloaded')
 
 @bot.command()
 async def reload(ctx, extension):
     bot.reload_extension(f'cmds.{extension}')
     await ctx.send(f'{extension} succesffuly reloaded.')
-    await bot.get_channel(867995199161397289).send(f'{extension} successfully reloaded')
+    await bot.get_channel(jdata["remu-chan-log"]).send(f'{extension} successfully reloaded')
 
 for filename in os.listdir('./cmds'):
     if filename.endswith('.py'):
