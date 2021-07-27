@@ -3,3 +3,4 @@ requests
 bs4
 requests
 discord-py-slash-command
+wolframclient

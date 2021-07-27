@@ -1,6 +1,8 @@
 from core.classes import Cog_Extension
 import discord, json
 from discord.ext import commands
+import requests
+from bs4 import BeautifulSoup
 
 with open('settings.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
@@ -33,6 +35,22 @@ class React(Cog_Extension):
         embed.add_field(name="5. Last but not least, HAIL DA KING!", value="No explanation. Just Do It ", inline=False)
         await ctx.send(embed=embed)
         await self.bot.get_channel(jdata["remu-chan-log"]).send(f'rules requested in {ctx.channel.mention}')
+
+    @commands.command()
+    async def meme(self, ctx, *, content):
+        URL = f"https://knowyourmeme.com/search?context=images&sort=relevance&q={content.replace(' ','+')}+category_name%3Ameme"
+
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'}
+
+        page = requests.get(URL, headers=headers)
+
+        soup = BeautifulSoup(page.content, "html.parser")
+        results = soup.find(id="infinite-scroll-wrapper")
+        photo_elements = results.find_all("a", {"class": "photo"})
+        await ctx.send(photo_elements[0].find("img")["data-src"])
+        await ctx.send(photo_elements[1].find("img")["data-src"])
+        await ctx.send(photo_elements[2].find("img")["data-src"])
+        await self.bot.get_channel(jdata["remu-chan-log"]).send(f'{ctx.author} memed {content}')
         
 def setup(bot):
     bot.add_cog(React(bot))
