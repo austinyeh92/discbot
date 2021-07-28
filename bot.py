@@ -1,11 +1,14 @@
 import discord
 from discord.ext import commands
 import os, json
+from dotenv import load_dotenv
+from os import getenv
 
+load_dotenv()
+
+token = getenv("TOKEN")
 with open('settings.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
-
-TOKEN = jdata["DISCORD_TOKEN"]
 
 intents = discord.Intents.all()
 
@@ -38,4 +41,5 @@ for filename in os.listdir('./cmds'):
         bot.load_extension(f'cmds.{filename[:-3]}')
 
 if __name__ == '__main__':
-    bot.run(TOKEN)
+    bot.run(token)
+

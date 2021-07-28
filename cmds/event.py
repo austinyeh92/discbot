@@ -24,11 +24,23 @@ class Event(Cog_Extension):
     async def on_message(self, msg):
         if 'apple' in msg.content.lower() and msg.author != self.bot.user:
             await msg.channel.send('Yes. Apple.')
-    
-    # Listener in the knighting ceremonies channel
-    @commands.Cog.listener()
-    async def on_message(self, msg):
-        pass
+
+        if (' u ' in msg.content.lower() or msg.content.lower().endswith(' u') or msg.content.lower().startswith('u ') or msg.content.lower() == 'u') and msg.author != self.bot.user and (msg.author.id == 686563633870012431 or msg.author.id == 744339202295988345):
+            guild = msg.author.guild
+            mutedRole = discord.utils.get(guild.roles, name="Muted")
+
+            if not mutedRole:
+                mutedRole = await guild.create_role(name="Muted")
+
+                for channel in guild.channels:
+                    await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+
+            await msg.author.add_roles(mutedRole, reason='This naughty kid said "u"')
+            await msg.channel.send(f"Muted {msg.author.mention} for 10 seconds for saying 'u'")
+            await asyncio.sleep(10)
+            await msg.author.remove_roles(mutedRole)
+            await msg.channel.send(f"Unmuted {msg.author.mention}")
+
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
