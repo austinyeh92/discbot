@@ -50,7 +50,7 @@ class React(Cog_Extension):
         await ctx.send(photo_elements[0].find("img")["data-src"])
         await ctx.send(photo_elements[1].find("img")["data-src"])
         await ctx.send(photo_elements[2].find("img")["data-src"])
-        await self.bot.get_channel(jdata["remu-chan-log"]).send(f'{ctx.author} memed {content}')
+        await self.bot.get_channel(jdata["remu-chan-log"]).send(f'{ctx.author} memed {content} in {ctx.guild}')
         
 def setup(bot):
     bot.add_cog(React(bot))

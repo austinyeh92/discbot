@@ -25,7 +25,8 @@ class Event(Cog_Extension):
         if 'apple' in msg.content.lower() and msg.author != self.bot.user:
             await msg.channel.send('Yes. Apple.')
 
-        if (' u ' in msg.content.lower() or msg.content.lower().endswith(' u') or msg.content.lower().startswith('u ') or msg.content.lower() == 'u') and msg.author != self.bot.user and (msg.author.id == 686563633870012431 or msg.author.id == 744339202295988345):
+        skrub_role = discord.utils.get(msg.author.guild.roles, id=683546760525906015)
+        if (' u ' in msg.content.lower() or msg.content.lower().endswith(' u') or msg.content.lower().startswith('u ') or msg.content.lower() == 'u') and msg.author != self.bot.user and (skrub_role in msg.author.roles):
             guild = msg.author.guild
             mutedRole = discord.utils.get(guild.roles, name="Muted")
 
@@ -36,7 +37,7 @@ class Event(Cog_Extension):
                     await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
 
             await msg.author.add_roles(mutedRole, reason='This naughty kid said "u"')
-            await msg.channel.send(f"Muted {msg.author.mention} for being a gay little dude")
+            await msg.channel.send(f"Muted {msg.author.mention} for... saying 'u' :\\")
             await asyncio.sleep(10)
             await msg.author.remove_roles(mutedRole)
             await msg.channel.send(f"Unmuted {msg.author.mention}")
