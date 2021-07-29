@@ -36,7 +36,7 @@ class Event(Cog_Extension):
                     await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
 
             await msg.author.add_roles(mutedRole, reason='This naughty kid said "u"')
-            await msg.channel.send(f"Muted {msg.author.mention} for 10 seconds for saying 'u'")
+            await msg.channel.send(f"Muted {msg.author.mention} for being a gay little dude")
             await asyncio.sleep(10)
             await msg.author.remove_roles(mutedRole)
             await msg.channel.send(f"Unmuted {msg.author.mention}")
