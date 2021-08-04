@@ -7,6 +7,13 @@ import json, asyncio
 with open('settings.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
+lst = ["no", "never", "not", "gay", "nah", "u"]
+def check_word(str, lst):
+    for i in range(len(lst)):
+        if f' {lst[i]} ' in str.lower() or str.lower().endswith(f' {lst[i]}') or str.lower().startswith(f'{lst[i]} ') or str.lower() == lst[i]:
+            return lst[i]
+    return None
+
 class Event(Cog_Extension):
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -26,7 +33,8 @@ class Event(Cog_Extension):
             await msg.channel.send('Yes. Apple.')
 
         skrub_role = discord.utils.get(msg.author.guild.roles, id=683546760525906015)
-        if (' u ' in msg.content.lower() or msg.content.lower().endswith(' u') or msg.content.lower().startswith('u ') or msg.content.lower() == 'u') and msg.author != self.bot.user and (skrub_role in msg.author.roles):
+        word = check_word(msg.content, lst)
+        if word != None and msg.author != self.bot.user and (skrub_role in msg.author.roles):
             guild = msg.author.guild
             mutedRole = discord.utils.get(guild.roles, name="Muted")
 
@@ -36,9 +44,9 @@ class Event(Cog_Extension):
                 for channel in guild.channels:
                     await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
 
-            await msg.author.add_roles(mutedRole, reason='This naughty kid said "u"')
-            await msg.channel.send(f"Muted {msg.author.mention} for... saying 'u' :\\")
-            await asyncio.sleep(10)
+            await msg.author.add_roles(mutedRole, reason=f'This naughty kid said "{word}"')
+            await msg.channel.send(f"Muted {msg.author.mention} for... saying \"{word}\" :\\")
+            await asyncio.sleep(3)
             await msg.author.remove_roles(mutedRole)
             await msg.channel.send(f"Unmuted {msg.author.mention}")
 

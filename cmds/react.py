@@ -3,6 +3,7 @@ import discord, json
 from discord.ext import commands
 import requests
 from bs4 import BeautifulSoup
+import datetime, math
 
 with open('settings.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
@@ -51,6 +52,46 @@ class React(Cog_Extension):
         await ctx.send(photo_elements[1].find("img")["data-src"])
         await ctx.send(photo_elements[2].find("img")["data-src"])
         await self.bot.get_channel(jdata["remu-chan-log"]).send(f'{ctx.author} memed {content} in {ctx.guild}')
-        
+
+    @commands.command()
+    async def joshcompound(self, ctx, action, *, content=None):
+        with open("settings.json", "r") as jsonFile:
+            jdata = json.load(jsonFile)
+
+        if action == 'help':
+            await ctx.send('Enter \";joshcompound set <amount>\" to set what josh owes rn')
+            await ctx.send('Enter \";joshcompound add <amount>\" to add an amount to what josh owes')
+            await ctx.send('Enter \";joshcompound subtract <amount>\" to subtract an amount from what josh owes')
+            await ctx.send('Enter \":joshcompound check\" to check how much josh owes')
+        elif action == 'set':
+            jdata["money"] = content
+            jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
+            await ctx.send(f'Josh\'s debt has been set to {jdata["money"]}')
+        elif action == 'add':
+            format = "%Y-%m-%d"
+            original_week = datetime.datetime.strptime(jdata["compound-datetime"], format)
+            week_elapsed = datetime.date.today().isocalendar()[1] - original_week.isocalendar()[1]
+            jdata["money"] = float(jdata["money"]) * math.pow(1.1, week_elapsed)
+            jdata["money"] += float(content)
+            jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
+            await ctx.send(f'Josh\'s debt has been increased to {jdata["money"]}')
+        elif action == 'subtract':
+            format = "%Y-%m-%d"
+            original_week = datetime.datetime.strptime(jdata["compound-datetime"], format)
+            week_elapsed = datetime.date.today().isocalendar()[1] - original_week.isocalendar()[1]
+            jdata["money"] = float(jdata["money"]) * math.pow(1.1, week_elapsed)
+            jdata["money"] -= float(content)
+            jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
+            await ctx.send(f'Josh\'s debt has been decreased to {jdata["money"]}')
+        elif action == 'check':
+            format = "%Y-%m-%d"
+            original_week = datetime.datetime.strptime(jdata["compound-datetime"], format)
+            week_elapsed = datetime.date.today().isocalendar()[1] - original_week.isocalendar()[1]
+            jdata["money"] = float(jdata["money"]) * math.pow(1.1, week_elapsed)
+            jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
+            await ctx.send(f'Josh\'s debt is currently {jdata["money"]}')
+
+        with open("settings.json", "w") as jsonFile:
+            json.dump(jdata, jsonFile, indent=4)
 def setup(bot):
     bot.add_cog(React(bot))
