@@ -54,19 +54,21 @@ class React(Cog_Extension):
         await self.bot.get_channel(jdata["remu-chan-log"]).send(f'{ctx.author} memed {content} in {ctx.guild}')
 
     @commands.command()
-    async def joshcompound(self, ctx, action, *, content=None):
+    async def comp(self, ctx, action, *, content=None):
         with open("settings.json", "r") as jsonFile:
             jdata = json.load(jsonFile)
 
         if action == 'help':
-            await ctx.send('Enter \";joshcompound set <amount>\" to set what josh owes rn\nEnter \";joshcompound rate <amount>%\" to set the rate of josh\'s compound to <amount>%\nEnter \";joshcompound add <amount>\" to add an amount to what josh owes\nEnter \";joshcompound subtract <amount>\" to subtract an amount from what josh owes\nEnter \":joshcompound check\" to check how much josh owes')
+            await ctx.send('Enter \";comp set <amount>\" to set what josh owes rn\nEnter \";comp rate <amount>%\" to set the rate of josh\'s compound to <amount>%\nEnter \";comp add <amount>\" to add an amount to what josh owes\nEnter \";comp subtract <amount>\" to subtract an amount from what josh owes\nEnter \";comp check\" to check how much josh owes')
         elif action == 'set':
             jdata["money"] = content
             jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
             await ctx.send(f'Josh\'s debt has been set to {jdata["money"]}')
+            await ctx.send(f'Current time is {datetime.date.today().strftime("%m/%d/%y %H:%M")}')
         elif action == 'rate':
             jdata["rate"] = content
             await ctx.send(f'Josh\'s debt rate has been set to {jdata["rate"]}')
+            await ctx.send(f'Current time is {datetime.date.today().strftime("%m/%d/%y %H:%M")}')
         elif action == 'add':
             format = "%Y-%m-%d"
             original_week = datetime.datetime.strptime(jdata["compound-datetime"], format)
@@ -75,6 +77,7 @@ class React(Cog_Extension):
             jdata["money"] += float(content)
             jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
             await ctx.send(f'Josh\'s debt has been increased to {jdata["money"]}')
+            await ctx.send(f'Current time is {datetime.date.today().strftime("%m/%d/%y %H:%M")}')
         elif action == 'subtract':
             format = "%Y-%m-%d"
             original_week = datetime.datetime.strptime(jdata["compound-datetime"], format)
@@ -83,6 +86,7 @@ class React(Cog_Extension):
             jdata["money"] -= float(content)
             jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
             await ctx.send(f'Josh\'s debt has been decreased to {jdata["money"]}')
+            await ctx.send(f'Current time is {datetime.date.today().strftime("%m/%d/%y %H:%M")}')
         elif action == 'check':
             format = "%Y-%m-%d"
             original_week = datetime.datetime.strptime(jdata["compound-datetime"], format)
@@ -90,6 +94,10 @@ class React(Cog_Extension):
             jdata["money"] = float(jdata["money"]) * math.pow((1+int(jdata['rate'])/100), week_elapsed)
             jdata["compound-datetime"] = datetime.date.today().strftime("%Y-%m-%d")
             await ctx.send(f'Josh\'s debt is currently {jdata["money"]}')
+            await ctx.send(f'Josh\'s rate is currently {jdata["rate"]}')
+            await ctx.send(f'Last updated time is {jdata["compound-datetime"]}')
+            await ctx.send(f'Current time is {datetime.date.today().strftime("%m/%d/%y %H:%M")}')
+
 
         with open("settings.json", "w") as jsonFile:
             json.dump(jdata, jsonFile, indent=4)
